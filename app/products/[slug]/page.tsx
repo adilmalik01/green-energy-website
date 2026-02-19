@@ -27,6 +27,7 @@ const staggerContainer = {
 export default function ProductDetail() {
   const params = useParams();
   const slug = params.slug as string;
+  console.log(slug)
 
   const [product, setProduct] = useState<any>(null);
   const [loading, setLoading] = useState(true);

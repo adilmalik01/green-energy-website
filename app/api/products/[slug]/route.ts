@@ -10,12 +10,9 @@ export async function GET(
   try {
     await dbConnect();
 
-    // Try to find by ID first, then by slug
-    let product = await Product.findById(params.slug).lean();
-
-    if (!product) {
-      product = await Product.findOne({ slug: params.slug }).lean();
-    }
+    const product = await Product.findOne({
+      slug: params.slug
+    }).lean();
 
     if (!product) {
       return NextResponse.json(

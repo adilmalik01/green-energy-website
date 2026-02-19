@@ -35,22 +35,17 @@ export default function Home() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        // Fetch series
         const seriesRes = await fetch('/api/series');
         if (seriesRes.ok) {
           const seriesData = await seriesRes.json();
           setSeries(seriesData);
-          if (seriesData.length > 0) {
-            setSelectedSeries(seriesData[0]._id);
-          }
         }
 
-        // Fetch products
         const productsRes = await fetch('/api/products');
         if (productsRes.ok) {
           const productsData = await productsRes.json();
-          setProducts(Array.isArray(productsData.products) ? productsData.products : []);
-
+          const productsArray = productsData.products || productsData;
+          setProducts(productsArray);
         }
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -62,9 +57,13 @@ export default function Home() {
     fetchData();
   }, []);
 
+  // Filter by selected series, then limit to 6 for homepage
   const filteredProducts = selectedSeries
     ? products.filter((p) => p.series === selectedSeries)
     : products;
+
+  const homepageProducts = filteredProducts.slice(0, 6);
+  const hasMoreProducts = products.length > 6;
 
   const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '+923001234567';
   const whatsappLink = `https://wa.me/${whatsappNumber.replace(/[^0-9]/g, '')}?text=Hello%20Green%20Energy%20Pakistan`;
@@ -170,9 +169,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Mid-Page CTA Section */}
-
-
       {/* Products Section */}
       <section className="section-padding bg-background/50">
         <div className="container-wide">
@@ -183,11 +179,9 @@ export default function Home() {
             variants={staggerContainer}
             className="space-y-12"
           >
-            {/* Header */}
+            {/* Section Header */}
             <motion.div variants={fadeInUp} className="space-y-4 max-w-2xl">
-              <h2 className="heading-lg text-foreground">
-                Our Premium Product Series
-              </h2>
+              <h2 className="heading-lg text-foreground">Our Premium Product Series</h2>
               <p className="body-base text-muted-foreground">
                 Discover our carefully curated range of solar solutions designed to meet every need and budget.
               </p>
@@ -195,34 +189,63 @@ export default function Home() {
 
             {/* Series Filter */}
             {series.length > 0 && (
-              <motion.div
-                variants={fadeInUp}
-                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
-              >
-                {series.map((s) => (
-                  <SeriesCard
-                    key={s._id}
-                    name={s.name}
-                    description={s.description}
-                    isActive={selectedSeries === s._id}
-                    onClick={() => setSelectedSeries(s._id)}
-                  />
-                ))}
+              <motion.div variants={fadeInUp} className="space-y-4 pb-8 border-b border-border">
+                <div className="space-y-1">
+                  <h3 className="text-lg font-semibold text-foreground">Filter by Series</h3>
+                  <p className="text-sm text-muted-foreground">
+                    {selectedSeries === null
+                      ? `Showing ${Math.min(products.length, 6)} of ${products.length} products`
+                      : `Showing ${Math.min(filteredProducts.length, 6)} product${filteredProducts.length !== 1 ? 's' : ''}`}
+                  </p>
+                </div>
+                <div className="flex flex-wrap gap-3">
+                  <motion.button
+                    onClick={() => setSelectedSeries(null)}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className={`px-6 py-2 rounded-full font-medium transition-all duration-300 ${
+                      selectedSeries === null
+                        ? 'bg-primary text-primary-foreground shadow-lg'
+                        : 'bg-card text-foreground border border-border hover:border-primary hover:bg-primary/5'
+                    }`}
+                  >
+                    All Products
+                  </motion.button>
+                  {series.map((s) => (
+                    <motion.button
+                      key={s._id}
+                      onClick={() => setSelectedSeries(s._id)}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className={`px-6 py-2 rounded-full font-medium transition-all duration-300 ${
+                        selectedSeries === s._id
+                          ? 'bg-primary text-primary-foreground shadow-lg'
+                          : 'bg-card text-foreground border border-border hover:border-primary hover:bg-primary/5'
+                      }`}
+                    >
+                      {s.name}
+                    </motion.button>
+                  ))}
+                </div>
               </motion.div>
             )}
 
-            {/* Products Grid */}
+            {/* Products Grid — max 6 on homepage */}
             {loading ? (
               <div className="flex items-center justify-center min-h-96">
                 <LoadingSpinner size="lg" />
               </div>
-            ) : filteredProducts.length > 0 ? (
+            ) : homepageProducts.length > 0 ? (
               <motion.div
                 variants={staggerContainer}
-                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch"
               >
-                {filteredProducts.slice(0, 6).map((product) => (
-                  <motion.div key={product._id} variants={fadeInUp}>
+                {homepageProducts.map((product) => (
+                  <motion.div
+                    key={product._id}
+                    variants={fadeInUp}
+                    className="flex flex-col h-full"
+                  >
                     <ProductCard
                       id={product._id}
                       name={product.name}
@@ -235,17 +258,16 @@ export default function Home() {
                 ))}
               </motion.div>
             ) : (
-              <motion.div
-                variants={fadeInUp}
-                className="text-center py-12"
-              >
-                <p className="text-muted-foreground">No products available</p>
+              <motion.div variants={fadeInUp} className="text-center py-16">
+                <p className="text-muted-foreground text-lg mb-6">
+                  No products available in this series yet.
+                </p>
               </motion.div>
             )}
 
-            {/* View All CTA */}
-            {products.length > 6 && (
-              <motion.div variants={fadeInUp} className="text-center">
+            {/* View All Products Button — always shown if total > 6 */}
+            {hasMoreProducts && (
+              <motion.div variants={fadeInUp} className="text-center pt-4">
                 <Button asChild className="btn-outline">
                   <Link href="/products">
                     View All Products <ArrowRight className="ml-2" size={18} />
@@ -268,9 +290,7 @@ export default function Home() {
             className="space-y-12"
           >
             <motion.div variants={fadeInUp} className="text-center max-w-2xl mx-auto space-y-4">
-              <h2 className="heading-lg text-foreground">
-                Why Choose Green Energy Pakistan?
-              </h2>
+              <h2 className="heading-lg text-foreground">Why Choose Green Energy Pakistan?</h2>
               <p className="body-base text-muted-foreground">
                 We're not just another solar provider. Here's what sets us apart.
               </p>
@@ -281,36 +301,12 @@ export default function Home() {
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
             >
               {[
-                {
-                  title: 'Premium Quality',
-                  description: 'We source only tier-1 components from globally recognized manufacturers.',
-                  icon: Shield,
-                },
-                {
-                  title: 'Expert Installation',
-                  description: 'Our certified technicians ensure perfect installation and setup.',
-                  icon: Zap,
-                },
-                {
-                  title: 'Lifetime Support',
-                  description: '24/7 customer support and maintenance services for peace of mind.',
-                  icon: MessageCircle,
-                },
-                {
-                  title: 'Competitive Pricing',
-                  description: 'Best value for money without compromising on quality.',
-                  icon: TrendingUp,
-                },
-                {
-                  title: 'Warranty & Guarantees',
-                  description: 'Comprehensive warranties covering all equipment and installation.',
-                  icon: Shield,
-                },
-                {
-                  title: 'Custom Solutions',
-                  description: 'Tailored solar systems designed for your specific needs.',
-                  icon: Zap,
-                },
+                { title: 'Premium Quality', description: 'We source only tier-1 components from globally recognized manufacturers.', icon: Shield },
+                { title: 'Expert Installation', description: 'Our certified technicians ensure perfect installation and setup.', icon: Zap },
+                { title: 'Lifetime Support', description: '24/7 customer support and maintenance services for peace of mind.', icon: MessageCircle },
+                { title: 'Competitive Pricing', description: 'Best value for money without compromising on quality.', icon: TrendingUp },
+                { title: 'Warranty & Guarantees', description: 'Comprehensive warranties covering all equipment and installation.', icon: Shield },
+                { title: 'Custom Solutions', description: 'Tailored solar systems designed for your specific needs.', icon: Zap },
               ].map((item, i) => (
                 <motion.div
                   key={i}
@@ -340,9 +336,7 @@ export default function Home() {
             className="max-w-2xl mx-auto space-y-12"
           >
             <motion.div variants={fadeInUp} className="text-center space-y-4">
-              <h2 className="heading-lg text-foreground">
-                Get Your Free Solar Consultation
-              </h2>
+              <h2 className="heading-lg text-foreground">Get Your Free Solar Consultation</h2>
               <p className="body-base text-muted-foreground">
                 Share your details and our energy experts will contact you within 24 hours with a personalized solar plan and cost analysis.
               </p>
@@ -407,7 +401,7 @@ export default function Home() {
       </section>
 
       {/* CTA Strip */}
-      <section className="section-padding  bg-black border-b border-white text-background ">
+      <section className="section-padding bg-black border-b border-white text-background">
         <div className="container-wide">
           <motion.div
             initial="hidden"
@@ -417,24 +411,9 @@ export default function Home() {
             className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center"
           >
             {[
-              {
-                icon: Phone,
-                label: 'Call Us',
-                value: '+92 300 123 4567',
-                action: 'tel:+923001234567',
-              },
-              {
-                icon: MessageCircle,
-                label: 'WhatsApp',
-                value: 'Chat with us',
-                action: whatsappLink,
-              },
-              {
-                icon: Mail,
-                label: 'Email',
-                value: 'info@greenenergy.pk',
-                action: 'mailto:info@greenenergy.pk',
-              },
+              { icon: Phone, label: 'Call Us', value: '+92 300 123 4567', action: 'tel:+923001234567' },
+              { icon: MessageCircle, label: 'WhatsApp', value: 'Chat with us', action: whatsappLink },
+              { icon: Mail, label: 'Email', value: 'info@greenenergy.pk', action: 'mailto:info@greenenergy.pk' },
             ].map((item, i) => (
               <motion.a
                 key={i}
