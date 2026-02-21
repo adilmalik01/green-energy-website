@@ -69,7 +69,7 @@ export async function PATCH(
         if (warrantyInfo) updateData.warrantyInfo = warrantyInfo;
         if (slug) updateData.slug = slug;
         if (features.length > 0) updateData.features = features;
-        if (imageUrl) updateData.image = imageUrl; // only update if new image uploaded
+        if (imageUrl) updateData.thumbnailImage = imageUrl; // only update if new image uploaded
 
         // Update product
         const product = await Product.findByIdAndUpdate(params.id, updateData, { new: true });
