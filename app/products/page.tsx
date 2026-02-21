@@ -8,6 +8,7 @@ import { ProductCard } from '@/components/product-card';
 import { SeriesCard } from '@/components/series-card';
 import { LoadingSpinner } from '@/components/loading-spinner';
 import { ArrowRight } from 'lucide-react';
+import Banner from '@/components/Banner';
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 20 },
@@ -71,26 +72,7 @@ export default function ProductsPage() {
   return (
     <main>
       {/* Hero Section */}
-      <section className="min-h-96 bg-gradient-to-b from-primary/10 to-background flex items-center pt-24">
-        <div className="container-wide">
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={staggerContainer}
-            className="text-center max-w-3xl mx-auto space-y-6"
-          >
-            <motion.h1 variants={fadeInUp} className="heading-xl text-foreground">
-              Our Solar Solutions
-            </motion.h1>
-            <motion.p
-              variants={fadeInUp}
-              className="body-lg text-muted-foreground"
-            >
-              Browse our complete range of premium solar panels, inverters, batteries, and mounting systems designed for Pakistani climate.
-            </motion.p>
-          </motion.div>
-        </div>
-      </section>
+      <Banner title='Our Solar Solutions' description='Browse our complete range of premium solar panels, inverters, batteries, and mounting systems designed for Pakistani climate.' imageUrl='/banners/banner1.png' />
 
       {/* Products Section */}
       <section className="section-padding bg-background">
@@ -118,8 +100,8 @@ export default function ProductsPage() {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     className={`px-6 py-2 rounded-full font-medium transition-all duration-300 ${selectedSeries === null
-                        ? 'bg-primary text-primary-foreground shadow-lg'
-                        : 'bg-card text-foreground border border-border hover:border-primary hover:bg-primary/5'
+                      ? 'bg-primary text-primary-foreground shadow-lg'
+                      : 'bg-card text-foreground border border-border hover:border-primary hover:bg-primary/5'
                       }`}
                   >
                     All Products
@@ -131,8 +113,8 @@ export default function ProductsPage() {
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       className={`px-6 py-2 rounded-full font-medium transition-all duration-300 ${selectedSeries === s._id
-                          ? 'bg-primary text-primary-foreground shadow-lg'
-                          : 'bg-card text-foreground border border-border hover:border-primary hover:bg-primary/5'
+                        ? 'bg-primary text-primary-foreground shadow-lg'
+                        : 'bg-card text-foreground border border-border hover:border-primary hover:bg-primary/5'
                         }`}
                     >
                       {s.name}
@@ -214,8 +196,26 @@ export default function ProductsPage() {
                     Get a Consultation <ArrowRight className="ml-2" size={18} />
                   </Link>
                 </Button>
-                <Button asChild className="btn-outline">
-                  <a href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER?.replace(/[^0-9]/g, '') || '923001234567'}`}>
+                <Button
+                  asChild
+                  className="
+    bg-[#7CB518] 
+    hover:bg-[#6AA312]
+    text-white
+    font-semibold
+    px-8 py-3
+    rounded-lg
+    transition-all duration-300
+    shadow-sm
+  "
+                >
+                  <a
+                    href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER?.replace(/[^0-9]/g, '') ||
+                      '923001234567'
+                      }`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     Chat on WhatsApp
                   </a>
                 </Button>

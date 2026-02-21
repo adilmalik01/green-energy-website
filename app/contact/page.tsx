@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Phone, Mail, MapPin, Clock } from 'lucide-react';
 import { LoadingSpinner } from '@/components/loading-spinner';
+import Banner from '@/components/Banner';
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 20 },
@@ -66,26 +67,7 @@ export default function Contact() {
   return (
     <main>
       {/* Hero Section */}
-      <section className="min-h-96 bg-gradient-to-b from-primary/10 to-background flex items-center pt-24">
-        <div className="container-wide">
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={staggerContainer}
-            className="text-center max-w-3xl mx-auto space-y-6"
-          >
-            <motion.h1 variants={fadeInUp} className="heading-xl text-foreground">
-              Get in Touch
-            </motion.h1>
-            <motion.p
-              variants={fadeInUp}
-              className="body-lg text-muted-foreground"
-            >
-              Have questions about our solar solutions? We're here to help. Contact us today for a free consultation.
-            </motion.p>
-          </motion.div>
-        </div>
-      </section>
+      <Banner title='Get in Touch' description="Have questions about our solar solutions? We\'re here to help. Contact us today for a free consultation." imageUrl='/banners/banner2.png' />
 
       {/* Contact Section */}
       <section className="section-padding bg-background">

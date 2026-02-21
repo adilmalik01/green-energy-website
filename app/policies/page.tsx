@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import Banner from '@/components/Banner';
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 20 },
@@ -12,32 +13,7 @@ export default function Policies() {
   return (
     <main>
       {/* Hero Section */}
-      <section className="min-h-96 bg-gradient-to-b from-primary/10 to-background flex items-center pt-24">
-        <div className="container-wide">
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={{
-              hidden: { opacity: 0 },
-              visible: {
-                opacity: 1,
-                transition: { staggerChildren: 0.1 },
-              },
-            }}
-            className="text-center max-w-3xl mx-auto space-y-6"
-          >
-            <motion.h1 variants={fadeInUp} className="heading-xl text-foreground">
-              Policies & Terms
-            </motion.h1>
-            <motion.p
-              variants={fadeInUp}
-              className="body-lg text-muted-foreground"
-            >
-              Learn about our policies, warranties, and terms of service.
-            </motion.p>
-          </motion.div>
-        </div>
-      </section>
+      <Banner title='Policies & Terms' description='Learn about our policies, warranties, and terms of service.' imageUrl='/banners/banner3.png' />
 
       {/* Policies Section */}
       <section className="section-padding bg-background">
@@ -47,12 +23,47 @@ export default function Policies() {
             animate="visible"
             variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
           >
-            <Tabs defaultValue="privacy" className="w-full">
+            <Tabs defaultValue="privacy" className="w-full bg-white">
               <TabsList className="grid w-full grid-cols-2 lg:grid-cols-4 mb-8">
-                <TabsTrigger value="privacy">Privacy</TabsTrigger>
-                <TabsTrigger value="terms">Terms</TabsTrigger>
-                <TabsTrigger value="warranty">Warranty</TabsTrigger>
-                <TabsTrigger value="delivery">Delivery</TabsTrigger>
+                <TabsTrigger
+                  value="privacy"
+                  className="data-[state=active]:bg-[#71AB26] 
+             data-[state=active]:text-white 
+             data-[state=active]:shadow-md
+             transition-all duration-300"
+                >
+                  Privacy
+                </TabsTrigger>
+
+                <TabsTrigger
+                  value="terms"
+                  className="data-[state=active]:bg-[#71AB26] 
+             data-[state=active]:text-white 
+             data-[state=active]:shadow-md
+             transition-all duration-300"
+                >
+                  Terms
+                </TabsTrigger>
+
+
+                <TabsTrigger
+                  value="warranty"
+                  className="data-[state=active]:bg-[#71AB26] 
+             data-[state=active]:text-white 
+             data-[state=active]:shadow-md
+             transition-all duration-300"
+                >
+                  Warranty
+                </TabsTrigger>
+                <TabsTrigger
+                  value="delivery"
+                  className="data-[state=active]:bg-[#71AB26] 
+             data-[state=active]:text-white 
+             data-[state=active]:shadow-md
+             transition-all duration-300"
+                >
+                  Delivery
+                </TabsTrigger>
               </TabsList>
 
               {/* Privacy Policy */}

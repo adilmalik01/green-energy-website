@@ -1,13 +1,22 @@
 import type { Metadata, Viewport } from 'next'
-import { Inter } from 'next/font/google'
+import { Cormorant_Garamond, DM_Sans, Inter } from 'next/font/google'
 
 import './globals.css'
-import { Navbar } from '@/components/navbar'
-import { Footer } from '@/components/footer'
 import AuthProvider from '@/components/providers/auth-provider'
+import LayoutWrapper from '@/components/LayoutWrapper'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-mono' })
+const cormorant = Cormorant_Garamond({
+  subsets: ['latin'],
+  weight: ['300', '400', '600'],
+  variable: '--font-cormorant',
+});
 
+const dmSans = DM_Sans({
+  subsets: ['latin'],
+  weight: ['300', '400', '500'],
+  variable: '--font-dm-sans',
+});
 export const metadata: Metadata = {
   title: 'Green Energy Pakistan | Solar Solutions',
   description:
@@ -36,13 +45,11 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${inter.variable} font-sans antialiased bg-background text-foreground`}
+        className={`${inter.variable} ${cormorant.variable} ${dmSans.variable} font-sans antialiased bg-background text-foreground`}
       >
-        <Navbar />
         <AuthProvider>
-          {children}
+          <LayoutWrapper>{children}</LayoutWrapper>
         </AuthProvider>
-        <Footer />
       </body>
     </html>
   )

@@ -1,5 +1,6 @@
 'use client';
 
+import Banner from '@/components/Banner';
 import { motion } from 'framer-motion';
 import { Award, Globe, Leaf, Users } from 'lucide-react';
 
@@ -22,26 +23,7 @@ export default function About() {
   return (
     <main>
       {/* Hero Section */}
-      <section className="min-h-96 bg-gradient-to-b from-primary/10 to-background flex items-center pt-24">
-        <div className="container-wide">
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={staggerContainer}
-            className="text-center max-w-3xl mx-auto space-y-6"
-          >
-            <motion.h1 variants={fadeInUp} className="heading-xl text-foreground">
-              About Green Energy Pakistan
-            </motion.h1>
-            <motion.p
-              variants={fadeInUp}
-              className="body-lg text-muted-foreground"
-            >
-              Leading the solar revolution in Pakistan with premium products, expert service, and a commitment to sustainability.
-            </motion.p>
-          </motion.div>
-        </div>
-      </section>
+      <Banner title='About Green Energy Pakistan' description='Leading the solar revolution in Pakistan with premium products, expert service, and a commitment to sustainability.' imageUrl='/banners/banner2.png' />
 
       {/* Company Story */}
       <section className="section-padding bg-background">

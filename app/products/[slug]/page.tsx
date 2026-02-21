@@ -6,7 +6,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { LoadingSpinner } from '@/components/loading-spinner';
-import { ArrowLeft, MessageCircle, Check } from 'lucide-react';
+import { ArrowLeft, MessageCircle, Check, Shield, Truck, Tag, Layers } from 'lucide-react';
 import { useParams } from 'next/navigation';
 
 const fadeInUp = {
@@ -27,7 +27,7 @@ const staggerContainer = {
 export default function ProductDetail() {
   const params = useParams();
   const slug = params.slug as string;
-  console.log(slug)
+  console.log(slug);
 
   const [product, setProduct] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -151,30 +151,41 @@ export default function ProductDetail() {
 
           {/* Product Info */}
           <motion.div variants={fadeInUp} className="space-y-8">
+
             {/* Header */}
             <div className="space-y-3">
-              <div className="inline-block bg-primary/20 text-primary px-3 py-1 rounded-full text-xs font-semibold">
-                {product.series}
+              <div className="flex items-center gap-2">
+                <Layers size={14} className="text-primary" />
+                <span className="inline-block bg-primary/20 text-primary px-3 py-1 rounded-full text-xs font-semibold tracking-wide uppercase">
+                  {product.series}
+                </span>
               </div>
-              <h1 className="heading-lg text-foreground">{product.name}</h1>
-              <p className="body-lg text-muted-foreground">{product.description}</p>
+              <h1 className="heading-lg text-foreground leading-tight">{product.name}</h1>
+              <p className="body-lg text-muted-foreground leading-relaxed">{product.description}</p>
             </div>
+
+            {/* Divider */}
+            <div className="h-px bg-border" />
 
             {/* Features */}
             {product.features && product.features.length > 0 && (
               <div className="space-y-4">
-                <h3 className="font-semibold text-foreground">Key Features</h3>
-                <ul className="space-y-2">
+                <h3 className="font-semibold text-foreground text-sm uppercase tracking-wider text-muted-foreground">
+                  Key Features
+                </h3>
+                <ul className="grid grid-cols-1 gap-2">
                   {product.features.map((feature: string, idx: number) => (
                     <motion.li
                       key={idx}
                       initial={{ opacity: 0, x: -10 }}
                       animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: idx * 0.1 }}
-                      className="flex items-start gap-3 text-muted-foreground"
+                      transition={{ delay: idx * 0.08 }}
+                      className="flex items-start gap-3 bg-muted/40 rounded-lg px-4 py-3"
                     >
-                      <Check className="text-primary mt-1 flex-shrink-0" size={20} />
-                      <span>{feature}</span>
+                      <span className="mt-0.5 flex-shrink-0 w-5 h-5 rounded-full bg-primary/15 flex items-center justify-center">
+                        <Check className="text-primary" size={12} strokeWidth={3} />
+                      </span>
+                      <span className="text-sm text-foreground leading-relaxed">{feature}</span>
                     </motion.li>
                   ))}
                 </ul>
@@ -184,12 +195,19 @@ export default function ProductDetail() {
             {/* Specifications */}
             {product.specifications && Object.keys(product.specifications).length > 0 && (
               <div className="space-y-4">
-                <h3 className="font-semibold text-foreground">Specifications</h3>
-                <div className="space-y-2 card-elevated p-4 rounded-lg">
-                  {Object.entries(product.specifications).map(([key, value]: [string, any]) => (
-                    <div key={key} className="flex justify-between text-sm">
-                      <span className="text-muted-foreground">{key}</span>
-                      <span className="font-medium text-foreground">{value}</span>
+                <h3 className="font-semibold text-sm uppercase tracking-wider text-muted-foreground">
+                  Specifications
+                </h3>
+                <div className="rounded-xl border border-border overflow-hidden">
+                  {Object.entries(product.specifications).map(([key, value]: [string, any], idx, arr) => (
+                    <div
+                      key={key}
+                      className={`flex items-center justify-between px-5 py-3 text-sm ${
+                        idx % 2 === 0 ? 'bg-muted/30' : 'bg-background'
+                      } ${idx !== arr.length - 1 ? 'border-b border-border' : ''}`}
+                    >
+                      <span className="text-muted-foreground font-medium">{key}</span>
+                      <span className="font-semibold text-foreground text-right">{value}</span>
                     </div>
                   ))}
                 </div>
@@ -199,33 +217,54 @@ export default function ProductDetail() {
             {/* Delivery & Warranty Info */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {product.deliveryInfo && (
-                <div className="card-elevated p-4 rounded-lg space-y-2">
-                  <h4 className="font-semibold text-foreground text-sm">Delivery</h4>
-                  <p className="text-sm text-muted-foreground">{product.deliveryInfo}</p>
+                <div className="flex items-start gap-4 rounded-xl border border-border p-5 bg-muted/20">
+                  <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                    <Truck size={18} className="text-primary" />
+                  </div>
+                  <div className="space-y-1">
+                    <h4 className="font-semibold text-foreground text-sm">Delivery</h4>
+                    <p className="text-xs text-muted-foreground leading-relaxed">{product.deliveryInfo}</p>
+                  </div>
                 </div>
               )}
               {product.warrantyInfo && (
-                <div className="card-elevated p-4 rounded-lg space-y-2">
-                  <h4 className="font-semibold text-foreground text-sm">Warranty</h4>
-                  <p className="text-sm text-muted-foreground">{product.warrantyInfo}</p>
+                <div className="flex items-start gap-4 rounded-xl border border-border p-5 bg-muted/20">
+                  <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                    <Shield size={18} className="text-primary" />
+                  </div>
+                  <div className="space-y-1">
+                    <h4 className="font-semibold text-foreground text-sm">Warranty</h4>
+                    <p className="text-xs text-muted-foreground leading-relaxed">{product.warrantyInfo}</p>
+                  </div>
                 </div>
               )}
             </div>
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
-              <Button
-                asChild
-                className="btn-primary flex-1"
-              >
+              <Button asChild className="btn-primary flex-1">
                 <Link href="/contact">Get a Quote</Link>
               </Button>
               <Button
                 asChild
-                className="btn-outline flex-1"
+                className="
+                  bg-[#7CB518]
+                  hover:bg-[#6AA312]
+                  text-white
+                  font-semibold
+                  px-8 py-3
+                  rounded-lg
+                  transition-all duration-300
+                  shadow-sm
+                "
               >
-                <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
-                  <MessageCircle className="mr-2" size={18} />
+                <a
+                  href={`https://wa.me/${
+                    process.env.NEXT_PUBLIC_WHATSAPP_NUMBER?.replace(/[^0-9]/g, '') || '923001234567'
+                  }`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   Chat on WhatsApp
                 </a>
               </Button>
@@ -252,7 +291,7 @@ export default function ProductDetail() {
             <Button asChild className="btn-primary">
               <Link href="/products">Browse All Products</Link>
             </Button>
-            <Button asChild className="btn-secondary">
+            <Button asChild className="btn-primary">
               <Link href="/about">Learn About Us</Link>
             </Button>
           </motion.div>

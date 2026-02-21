@@ -87,37 +87,36 @@ export function HeroCarousel() {
   )}?text=Hello%20Green%20Energy%20Pakistan`;
 
   const variants = {
-    enter: (direction: number) => ({
-      x: direction > 0 ? 400 : -400,
+    initial: {
       opacity: 0,
-      scale: 1.05,
-    }),
-    center: {
-      x: 0,
+      scale: 1.08,
+    },
+    animate: {
       opacity: 1,
       scale: 1,
+      transition: {
+        duration: 1.2,
+        ease: "easeOut",
+      },
     },
-    exit: (direction: number) => ({
-      x: direction > 0 ? -400 : 400,
+    exit: {
       opacity: 0,
-      scale: 0.95,
-    }),
+      scale: 1.05,
+      transition: {
+        duration: 0.8,
+        ease: "easeIn",
+      },
+    },
   };
-
   return (
     <section className="relative w-full h-screen overflow-hidden">
-      <AnimatePresence custom={direction} mode="wait">
+      <AnimatePresence mode="sync">
         <motion.div
           key={slides[current].id}
-          custom={direction}
           variants={variants}
-          initial="enter"
-          animate="center"
+          initial="initial"
+          animate="animate"
           exit="exit"
-          transition={{
-            duration: 1,
-            ease: [0.4, 0, 0.2, 1],
-          }}
           className="absolute inset-0"
         >
           {/* Background Image */}
@@ -220,8 +219,8 @@ export function HeroCarousel() {
             key={index}
             onClick={() => goTo(index)}
             className={`rounded-full transition-all duration-300 ${index === current
-                ? 'bg-white w-8 h-3'
-                : 'bg-white/40 hover:bg-white/60 w-3 h-3'
+              ? 'bg-white w-8 h-3'
+              : 'bg-white/40 hover:bg-white/60 w-3 h-3'
               }`}
             whileHover={{ scale: 1.2 }}
             whileTap={{ scale: 0.9 }}

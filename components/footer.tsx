@@ -1,7 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { Phone, Mail, MapPin, Linkedin, Twitter } from 'lucide-react';
+import { Phone, Mail, MapPin, Instagram, Facebook, Linkedin } from 'lucide-react';
+import { FaTiktok } from 'react-icons/fa';
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -15,7 +16,7 @@ export function Footer() {
           {/* Company Info */}
           <div className="space-y-4">
             <div className="flex items-center gap-2  h-20">
-              <img src="/green-logo-white.png" alt=""  />
+              <img src="/green-logo-white.png" alt="" />
             </div>
             <p className="text-sm text-background/70">
               Leading solar energy solutions provider in Pakistan, committed to a sustainable future.
@@ -103,28 +104,42 @@ export function Footer() {
         {/* Divider */}
         <div className="border-t border-background/20 pt-8">
           {/* Bottom Footer */}
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="text-sm text-background/70">
-              &copy; {currentYear} Green Energy Pakistan. All rights reserved.
-            </p>
-            <div className="flex items-center gap-4">
-              <a
-                href="https://linkedin.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-primary transition-colors"
-              >
-                <Linkedin size={20} />
-              </a>
-              <a
-                href="https://twitter.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-primary transition-colors"
-              >
-                <Twitter size={20} />
-              </a>
-            </div>
+          <div className="flex items-center gap-4">
+            <a
+              href="https://www.instagram.com/greenenergy02?igsh=a2t5ZjBuN3gzdmEz"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-primary transition-colors"
+            >
+              <Instagram size={20} />
+            </a>
+
+            <a
+              href="https://www.tiktok.com/@green_energy_pakistan"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-primary transition-colors"
+            >
+              <FaTiktok size={20} />
+            </a>
+
+            <a
+              href="https://www.facebook.com/the.green.energy.pakistan"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-primary transition-colors"
+            >
+              <Facebook size={20} />
+            </a>
+
+            <a
+              href="https://www.linkedin.com/company/green-energy-pakistan/?viewAsMember=true"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-primary transition-colors"
+            >
+              <Linkedin size={20} />
+            </a>
           </div>
         </div>
       </div>
